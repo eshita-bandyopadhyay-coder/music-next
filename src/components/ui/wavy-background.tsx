@@ -24,7 +24,7 @@ export const WavyBackground = ({
   blur?: number;
   speed?: "slow" | "fast";
   waveOpacity?: number;
-  [key: string]: any;
+  [key: string]: string | number | boolean | undefined | React.ReactNode;
 }) => {
   const noise = createNoise3D();
   let w: number,
@@ -33,7 +33,6 @@ export const WavyBackground = ({
     i: number,
     x: number;
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
-  const [ctx, setCtx] = useState<CanvasRenderingContext2D | null>(null); // Explicit type for ctx
   const [animationId, setAnimationId] = useState<number | null>(null); // Track animationId state
 
   const getSpeed = () => {
@@ -52,7 +51,6 @@ export const WavyBackground = ({
     const canvas = canvasRef.current;
     const ctx = canvas.getContext("2d");
     if (ctx) {
-      setCtx(ctx);
       w = ctx.canvas.width = window.innerWidth;
       h = ctx.canvas.height = window.innerHeight;
       ctx.filter = `blur(${blur}px)`;
@@ -99,6 +97,7 @@ export const WavyBackground = ({
     setAnimationId(id); // Save the animation ID
   };
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     init();
     return () => {
@@ -136,4 +135,3 @@ export const WavyBackground = ({
     </div>
   );
 };
-
